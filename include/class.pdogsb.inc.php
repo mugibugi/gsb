@@ -269,13 +269,32 @@ class PdoGsb{
 		}
 		return $lesMois;
 	}
-/**
+ /**
  * Retourne les informations d'une fiche de frais d'un utilisateur pour un mois donné
  
  * @param $idutilisateur 
  * @param $mois sous la forme aaaamm
  * @return un tableau avec des champs de jointure entre une fiche de frais et la ligne d'état 
-*/	
+*/
+        public function getLesVisiteurs(){
+		$req = "SELECT utilisateur.nom, utilisateur.prenom  FROM fichefrais, utilisateur WHERE fichefrais.idutilisateur = utilisateur.id AND fichefrais.idEtat = 'CL'";
+		$res = PdoGsb::$monPdo->query($req);
+		$lesVisiteurs =array();
+		$laLigne = $res->fetch();
+		while($laLigne != null)	{
+			$nom = $laLigne['nom'];
+			$prenom = $laLigne['prenom'];
+			$lesVisiteurs["$nom"]=array(
+		     "nom"=>"$mois",
+		     "prenom"  => "$prenom",
+			
+             );
+			$laLigne = $res->fetch(); 		
+		}
+		return $lesVisiteurs;
+	}
+        
+	
 	public function getLesInfosFicheFrais($idutilisateur,$mois){
 		$req = "select ficheFrais.idEtat as idEtat, ficheFrais.dateModif as dateModif, ficheFrais.nbJustificatifs as nbJustificatifs, 
 			ficheFrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id 
