@@ -4,8 +4,9 @@ $action = $_REQUEST['action'];
 $idutilisateur = $_SESSION['idutilisateur'];
 switch($action){
 	case 'selectionnerVisiteurs':{
+            
 		$lesVisiteurs=$pdo->getLesVisiteurs();
-                echo "Bonjour";
+                
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,
 		// les mois étant triés décroissants

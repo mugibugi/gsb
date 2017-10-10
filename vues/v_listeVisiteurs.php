@@ -12,16 +12,17 @@
                         echo " Bonjour";
 			foreach ($lesVisiteurs as $unVisiteur)
 			{
+                            $id = $unVisiteur['id'];
 			    $nom = $unVisiteur['nom'];
 				$prenom = $unVisiteur['prenom'];
 				
-				if($nom == $visiteurASelectionner){
+				if($id == $visiteurASelectionner){
 				?>
-				<option selected value="<?php echo $nom ?>"><?php echo $prenom ?> </option>
+				<option selected value="<?php echo $id ?>"><?php echo $nom."/".$prenom ?> </option>
 				<?php 
 				}
 				else{ ?>
-				<option value="<?php echo $nom ?>"><?php echo  $prenom ?> </option>
+				<option value="<?php echo $id ?>"><?php echo  $nom."/".$prenom ?> </option>
 				<?php 
 				}
 			

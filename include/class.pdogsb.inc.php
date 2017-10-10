@@ -276,16 +276,18 @@ class PdoGsb{
  * @param $mois sous la forme aaaamm
  * @return un tableau avec des champs de jointure entre une fiche de frais et la ligne d'état 
 */
-        public function getLesVisiteurs(){
-		$req = "SELECT utilisateur.nom, utilisateur.prenom  FROM fichefrais, utilisateur WHERE fichefrais.idutilisateur = utilisateur.id AND fichefrais.idEtat = 'CL'";
+        public function getLesVisiteurs($unMois){
+		$req = "SELECT utilisateur.id,utilisateur.nom, utilisateur.prenom  FROM fichefrais, utilisateur WHERE fichefrais.idutilisateur = utilisateur.id AND fichefrais.idEtat = 'CL' AND mois=".$unMois."";
 		$res = PdoGsb::$monPdo->query($req);
 		$lesVisiteurs =array();
 		$laLigne = $res->fetch();
 		while($laLigne != null)	{
+                    $id = $laLigne['id'];
 			$nom = $laLigne['nom'];
 			$prenom = $laLigne['prenom'];
 			$lesVisiteurs["$nom"]=array(
-		     "nom"=>"$mois",
+                     "id"=>"$id",
+		     "nom"=>"$nom",
 		     "prenom"  => "$prenom",
 			
              );
