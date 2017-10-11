@@ -1,7 +1,7 @@
 ﻿ <div id="contenu">
       <h2>Mes fiches de frais</h2>
       <h3>Visiteurs à sélectionner : </h3>
-      <form action="index.php?uc=etatFrais&action=voirFicheFrais" method="post">
+      <form action="index.php?uc=etatFrais&action=voirEtatFrais" method="post">
       <div class="corpsForm">
          
       <p>
@@ -9,7 +9,7 @@
         <label for="lstVisiteurs" accesskey="n">Visiteurs : </label>
         <select id="lstVisiteurs" name="lstVisiteurs">
             <?php
-                        echo " Bonjour";
+                        
 			foreach ($lesVisiteurs as $unVisiteur)
 			{
                             $id = $unVisiteur['id'];

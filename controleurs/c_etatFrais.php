@@ -15,26 +15,37 @@ switch($action){
 		break;
 	}
         case 'selectionnerVisiteurs':{
-                $unMois = $_REQUEST['lstMois'];
-		$lesVisiteurs=$pdo->getLesVisiteurs($unMois);
+                $_SESSION['unMois'] = $_REQUEST['lstMois'];
+                $moisASelectionner = $_SESSION['unMois'];
                 
+                $lesMois = $pdo->getLesMoisEnAttente();
+                include("vues/v_listeMois.php");
+        
+		$lesVisiteurs=$pdo->getLesVisiteurs($moisASelectionner);
+                include("vues/v_listeVisiteurs.php");
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,
 		// les mois étant triés décroissants
-		include("vues/v_listeVisiteurs.php");
+		
 		break;
 	}
 	case 'voirEtatFrais':{
                 
-		$leMois = $_REQUEST['lstMois']; 
-		$lesMois=$pdo->getLesMoisDisponibles($idutilisateur);
-		$moisASelectionner = $leMois;
-		include("vues/v_listeMois.php");
-		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idutilisateur,$leMois);
-		$lesFraisForfait= $pdo->getLesFraisForfait($idutilisateur,$leMois);
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idutilisateur,$leMois);
-		$numAnnee =substr( $leMois,0,4);
-		$numMois =substr( $leMois,4,2);
+                $_SESSION['unVisiteur'] = $_REQUEST['lstVisiteurs'];
+                $visiteurASelectionner = $_SESSION['unVisiteur'];
+                $moisASelectionner = $_SESSION['unMois'];
+                
+                $lesMois = $pdo->getLesMoisEnAttente();
+                include("vues/v_listeMois.php");
+                
+                $lesVisiteurs = $pdo->getLesVisiteurs($moisASelectionner);
+                include("vues/v_listeVisiteurs.php");
+
+		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteurASelectionner,$moisASelectionner);
+		$lesFraisForfait= $pdo->getLesFraisForfait($visiteurASelectionner,$moisASelectionner);
+		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteurASelectionner,$moisASelectionner);
+		$numAnnee =substr( $moisASelectionner,0,4);
+		$numMois =substr( $moisASelectionner,4,2);
 		$libEtat = $lesInfosFicheFrais['libEtat'];
 		$montantValide = $lesInfosFicheFrais['montantValide'];
 		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
