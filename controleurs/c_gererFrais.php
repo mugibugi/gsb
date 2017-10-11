@@ -41,10 +41,25 @@ switch($action){
 	    $pdo->supprimerFraisHorsForfait($idFrais);
 		break;
 	}
+        case 'validerFicheFrais':
+            $moisASelectionner = $_SESSION['unMois'];
+            $visiteurASelectionner = $_SESSION['unVisiteur'];
+            $_SESSION['nom'] = $_REQUEST['nom'];
+            $_SESSION['prenom'] = $_REQUEST['prenom'];
+            
+            $nom = $_SESSION['nom'];
+            $prenom = $_SESSION['prenom'];
+            
+            $numAnnee = substr($moisASelectionner, 0, 4);
+            $numMois = substr($moisASelectionner, 4, 2);
+            
+            $pdo->majEtatFicheFrais($visiteurASelectionner,$moisASelectionner,'VA');
+            include 'vues/v_confirmValide.php';
+            break;
 }
-$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idutilisateur,$mois);
-$lesFraisForfait= $pdo->getLesFraisForfait($idutilisateur,$mois);
-include("vues/v_listeFraisForfait.php");
-include("vues/v_listeFraisHorsForfait.php");
+//$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idutilisateur,$mois);
+//$lesFraisForfait= $pdo->getLesFraisForfait($idutilisateur,$mois);
+//include("vues/v_listeFraisForfait.php");
+//include("vues/v_listeFraisHorsForfait.php");
 
 ?>

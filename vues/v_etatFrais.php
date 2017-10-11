@@ -1,4 +1,4 @@
-﻿
+
 <h3>Fiche de frais du mois <?php echo $numMois."-".$numAnnee?> : 
     </h3>
     <div class="encadre">
@@ -13,12 +13,15 @@
          <?php
          foreach ( $lesFraisForfait as $unFraisForfait ) 
 		 {
+                        
 			$libelle = $unFraisForfait['libelle'];
 		?>	
 			<th> <?php echo $libelle?></th>
+                        
 		 <?php
         }
 		?>
+                        <th>Action</th>
 		</tr>
         <tr>
         <?php
@@ -30,7 +33,11 @@
 		 <?php
           }
 		?>
+                <form action='index.php?uc=gererFrais&action=modifier' method='POST'>
+                    <td><input type='submit' value='Modifier'/></td>
+                </form>
 		</tr>
+                
     </table>
   	<table class="listeLegere">
   	   <caption>Descriptif des éléments hors forfait -<?php echo $nbJustificatifs ?> justificatifs reçus -
@@ -43,6 +50,7 @@
         <?php      
           foreach ( $lesFraisHorsForfait as $unFraisHorsForfait ) 
 		  {
+                        $idFrais = $unFraisHorsForfait['id'];
 			$date = $unFraisHorsForfait['date'];
 			$libelle = $unFraisHorsForfait['libelle'];
 			$montant = $unFraisHorsForfait['montant'];
@@ -56,19 +64,15 @@
           }
 		?>
     </table>
+    <form action='index.php?uc=gererFrais&action=validerFicheFrais' method='POST'>
+        <input type='submit' value='Valider'/>
+    </form>
+    
+    <form action='index.php?uc=gererFrais&action=supprimerFrais' method='POST'>
+        <input type='hidden'  name='idFrais' value='<?php $idFrais ?>'/>
+        <input type='submit' value='Supprimer'/>       
+    </form>
+    
   </div>
   </div>
  
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -340,6 +340,7 @@ class PdoGsb{
 		where fichefrais.idutilisateur ='$idutilisateur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
+
         
 }
 ?>
