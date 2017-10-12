@@ -65,7 +65,9 @@
 		?>
     </table>
     <form action='index.php?uc=gererFrais&action=validerFicheFrais' method='POST'>
-        <input type='submit' value='Valider'/>
+        <input type="hidden" name="nomVisiteur" value="<?php $nomVisiteur ?>"/>
+        <input type="hidden" name="prenomVisiteur" value="<?php $prenomVisiteur ?>"/>
+        <input type='submit' value='Valider'/>  
     </form>
     
     <form action='index.php?uc=gererFrais&action=supprimerFrais' method='POST'>

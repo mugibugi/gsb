@@ -44,12 +44,10 @@ switch($action){
         case 'validerFicheFrais':
             $moisASelectionner = $_SESSION['unMois'];
             $visiteurASelectionner = $_SESSION['unVisiteur'];
-            $_SESSION['nom'] = $_REQUEST['nom'];
-            $_SESSION['prenom'] = $_REQUEST['prenom'];
             
-            $nom = $_SESSION['nom'];
-            $prenom = $_SESSION['prenom'];
-            
+            $nomVisiteur = $_REQUEST['nomVisiteur'];
+            $prenomVisiteur = $_REQUEST['prenomVisiteur'];
+                
             $numAnnee = substr($moisASelectionner, 0, 4);
             $numMois = substr($moisASelectionner, 4, 2);
             

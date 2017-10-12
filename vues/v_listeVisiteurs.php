@@ -34,10 +34,12 @@
       </p>
       </div>
       <div class="piedForm">
-      <p>
+      <form>
         <input id="ok" type="submit" value="Valider" size="20" />
+        <input type="hidden" name="nom" value="<?php $nom ?>"/>
+        <input type="hidden" name="prenom" value="<?php $prenom ?>"/>
         <input id="annuler" type="reset" value="Effacer" size="20" />
-      </p> 
+      </form> 
       </div>
         
       </form>
