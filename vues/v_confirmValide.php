@@ -1,4 +1,5 @@
 <?php
 
-echo 'Vous avez bien valider la fiche de frais';
+echo 'Vous avez bien valider la fiche de frais '.$nom;
 
+?>

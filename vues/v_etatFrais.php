@@ -1,5 +1,5 @@
 
-<h3>Fiche de frais du mois <?php echo $numMois."-".$numAnnee?> : 
+<h3>Fiche de frais du mois <?php echo $nom."-".$prenom."-".$numMois."-".$numAnnee?> : 
     </h3>
     <div class="encadre">
     <p>
@@ -29,12 +29,12 @@
 		  {
 				$quantite = $unFraisForfait['quantite'];
 		?>
-                <td class="qteForfait"><?php echo $quantite?> </td>
+                <td class="qteForfait"><input type="text" size="10" value="<?php echo $quantite?>"/></td>
 		 <?php
           }
 		?>
                 <form action='index.php?uc=gererFrais&action=modifier' method='POST'>
-                    <td><input type='submit' value='Modifier'/></td>
+                    <td><input type='submit' value='Modifier'/></td>       
                 </form>
 		</tr>
                 

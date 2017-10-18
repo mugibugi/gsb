@@ -35,6 +35,12 @@ switch($action){
                 $visiteurASelectionner = $_SESSION['unVisiteur'];
                 $moisASelectionner = $_SESSION['unMois'];
                 
+                $_SESSION['nom'] = $_REQUEST['nom'];
+                $_SESSION['prenom'] = $_REQUEST['prenom'];
+                
+                $nom = $_SESSION['nom'];
+                $prenom = $_SESSION['prenom'];
+                
                 $lesMois = $pdo->getLesMoisEnAttente();
                 include("vues/v_listeMois.php");
                 

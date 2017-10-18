@@ -13,9 +13,12 @@ switch($action){
 		break;
 	}
 	case 'validerMajFraisForfait':{
+            
+                $visiteurASelectionner = $_SESSION['unVisiteur'];
+                $moisASelectionner = $_SESSION['unMois'];
 		$lesFrais = $_REQUEST['lesFrais'];
 		if(lesQteFraisValides($lesFrais)){
-	  	 	$pdo->majFraisForfait($idutilisateur,$mois,$lesFrais);
+	  	 	$pdo->majFraisForfait($visiteurASelectionner,$moisASelectionner,$lesFrais);
 		}
 		else{
 			ajouterErreur("Les valeurs des frais doivent être numériques");
@@ -44,9 +47,6 @@ switch($action){
         case 'validerFicheFrais':
             $moisASelectionner = $_SESSION['unMois'];
             $visiteurASelectionner = $_SESSION['unVisiteur'];
-            $_SESSION['nom'] = $_REQUEST['nom'];
-            $_SESSION['prenom'] = $_REQUEST['prenom'];
-            
             $nom = $_SESSION['nom'];
             $prenom = $_SESSION['prenom'];
             
