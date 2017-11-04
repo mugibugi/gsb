@@ -1,7 +1,8 @@
 ﻿ <div id="contenu">
       <h2>Mes fiches de frais</h2>
       <h3>Visiteurs à sélectionner : </h3>
-      <form action="index.php?uc=etatFrais&action=voirEtatFrais" method="post">
+      <form action="index.php?uc=validerFrais&action=voirEtatFrais" method="post">
+          <input type="hidden" name="unMois" value="<?php echo $moisASelectionner ?>" />
       <div class="corpsForm">
          
       <p>
@@ -36,8 +37,6 @@
       <div class="piedForm">
           <form>
         <input id="ok" type="submit" value="Valider" size="20" />
-        <input type="hidden" name="nom" value="<?php $nom?>"/>
-        <input type="hidden" name="prenom" value="<?php $prenom?>"/>
         <input id="annuler" type="reset" value="Effacer" size="20" />
       </form> 
       </div>
