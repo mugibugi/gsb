@@ -37,6 +37,8 @@
       <div class="piedForm">
           <form>
         <input id="ok" type="submit" value="Valider" size="20" />
+        <input type="hidden" name="nom" value="<?php echo $nom ?>"/>
+        <input type="hidden" name="prenom" value="<?php echo $prenom ?>"/>
         <input id="annuler" type="reset" value="Effacer" size="20" />
       </form> 
       </div>

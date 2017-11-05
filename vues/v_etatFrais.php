@@ -98,7 +98,9 @@
         <form action="index.php?uc=validerFrais&action=validerFicheFrais" method="post">
             <input type="hidden" name="idVisiteur" value="<?php echo $visiteurASelectionner ?>" />
             <input type="hidden" name="unMois" value="<?php echo $moisASelectionner ?>" />
-            <input type="submit" value="Valider la fiche" />
+            <input type="hidden" name="nom" value="<?php echo $nom ?>"/>
+            <input type="hidden" name="prenom" value="<?php echo $prenom ?>"/>
+            <input type="submit" value="Valider" />
         </form> 
     </div>
 </div>

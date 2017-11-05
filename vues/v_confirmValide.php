@@ -2,7 +2,7 @@
     <h3>Confirmation de validation : </h3>
     <div class="encadre">
         <p class="p">
-            Fiche du <?php echo $numMois. '/'?><?php echo $numAnnee ?>Enregistée
+            Fiche de <?php echo $nom ?> <?php echo $prenom ?> du <?php echo $numMois. '/'?><?php echo $numAnnee ?> Enregistrée
         </p>
         
         

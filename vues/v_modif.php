@@ -17,8 +17,8 @@
                     $quantiteForfait = $FraisForfait['quantite'];
 	?>
               
-        <strong><label class="lab" for="idFrais"><?php echo $libelle ?></label></strong>
-        <input type="text" id="idFrais" name="lesFrais[<?php echo $idFrais?>]" size="20"  value="<?php echo $quantiteForfait?>" ></br>
+        <strong><label for="idFrais"><?php echo $libelle ?></label></strong>
+        <input type="text" id="idFrais" name="lesFrais[<?php echo $idFrais?>]" value="<?php echo $quantiteForfait?>" ></br>
 		
 	<?php
 		}
