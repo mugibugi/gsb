@@ -134,22 +134,10 @@ switch($action){
                     $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
                     $dateModif =  $lesInfosFicheFrais['dateModif'];                
                     $dateModif =  dateAnglaisVersFrancais($dateModif);
+              
+
+                    $pdo->reporterFraisHorsForfait($idFraisHorsForfait, $moisASelectionner, $visiteurASelectionner, $numMois);
                     
-                    //recuperation date du dernier mois saisi                   
-                    $dernierMois = $pdo->dernierMoisSaisi($visiteurASelectionner);
-                    
-                    //verification que le frais est dans le dernier mois de saisi                 
-                    if($moisASelectionner == $dernierMois)
-                    {
-                        $dernierMois = incrementerMois($moisASelectionner);
-                        $pdo->creeNouvellesLignesFrais($visiteurASelectionner, $dernierMois);
-                        $pdo->reporterFraisHorsForfait($idFraisHorsForfait,$dernierMois);
-                    }
-                    else
-                    {
-                        $pdo->reporterFraisHorsForfait($idFraisHorsForfait,$dernierMois);
-                    }
-                    //redirection
                     include("vues/v_etatFrais.php");
                 break;
         }
@@ -173,6 +161,7 @@ switch($action){
                     $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
                     $dateModif =  $lesInfosFicheFrais['dateModif'];
                     $dateModif =  dateAnglaisVersFrancais($dateModif);
+                    
                     
                     $pdo->supprimerFraisHorsForfait($idFraisHorsForfait);
                     

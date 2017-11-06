@@ -340,15 +340,20 @@ class PdoGsb{
 		where fichefrais.idutilisateur ='$idutilisateur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
-        function reporterFraisHorsForfait($idFrais, $dernierMois)
+        function reporterFraisHorsForfait($idFrais, $mois, $idutilisateur, $unMois)
         {
-            //requete pour mettre a jour le champs
-            $req = "update lignefraishorsforfait"
-                    . " set mois = $dernierMois"
-                    . " where id = $idFrais";
-            
+            if($unMois != 12){
+                //requete pour mettre a jour le champs
+                $req = "update lignefraishorsforfait set mois=$mois + 1 where idutilisateur='$idutilisateur' and id='$idFrais";
+            }
+            else {
+                //Pour passer au premier mois de l'année suivante, maj du champs
+                $req = "update lignefraishorsforfait set mois=$mois + 89 where idutilisateur='$idutilisateur' and id='$idFrais";
+            }
+
             //execution de la requete
-            PdoGsb::$monPdo->exec($req);
+            $res = PdoGsb::$monPdo->exec($req);
+            return $res;
         }
         
 }
