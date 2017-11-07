@@ -77,6 +77,8 @@
                     <input type="hidden" name="idFraisHorsForfait" value="<?php echo $idFrais ?>" />
                     <input type="hidden" name="idVisiteur" value="<?php echo $visiteurASelectionner ?>" />
                     <input type="hidden" name="unMois" value="<?php echo $moisASelectionner ?>" />
+                    <input type="hidden" name="nom" value="<?php echo $nom ?>"/>
+                    <input type="hidden" name="prenom" value="<?php echo $prenom ?>"/>
                     <td><input type="submit" value="Reporter" /></td>
                 </form>
             
@@ -86,6 +88,8 @@
                     <input type="hidden" name="idFraisHorsForfait" value="<?php echo $idFrais ?>" />
                     <input type="hidden" name="idVisiteur" value="<?php echo $visiteurASelectionner ?>" />
                     <input type="hidden" name="unMois" value="<?php echo $moisASelectionner ?>" />
+                    <input type="hidden" name="nom" value="<?php echo $nom ?>"/>
+                    <input type="hidden" name="prenom" value="<?php echo $prenom ?>"/>
                     <td><input type="submit" value="Refuser" /></td>
 </form>
             <?php

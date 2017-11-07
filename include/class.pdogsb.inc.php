@@ -352,8 +352,8 @@ class PdoGsb{
             }
 
             //execution de la requete
-            $res = PdoGsb::$monPdo->exec($req);
-            return $res;
+            PdoGsb::$monPdo->exec($req);
+          
         }
         
 }
