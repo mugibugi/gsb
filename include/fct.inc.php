@@ -199,4 +199,30 @@ function nbErreurs(){
 	   return count($_REQUEST['erreurs']);
 	}
 }
+function moisSuivant($mois)
+{    
+     
+    $numAnnee =substr( $mois,0,4);
+    $numMois =substr( $mois,4,2);
+    
+    
+    if($numMois == 12)
+    {
+        $numAnnee++;
+        $nouveauMois = $numAnnee."01";
+    }
+    else if($numMois < 9)
+    {
+        $numMois++;
+        $nouveauMois = $numAnnee."0".$numMois;
+    }
+    else
+    {
+        $numMois++;
+        $nouveauMois = $numAnnee."".$numMois;
+    }
+    
+    return $nouveauMois;
+}
+
 ?>

@@ -72,7 +72,7 @@ class PdoGsb{
  * @param $mois sous la forme aaaamm
  * @return tous les champs des lignes de frais hors forfait sous la forme d'un tableau associatif 
 */
-	public function getLesFraisHorsForfait($idutilisateur,$mois){
+	static public function getLesFraisHorsForfait($idutilisateur,$mois){
 	    $req = "select * from lignefraishorsforfait where lignefraishorsforfait.idutilisateur ='$idutilisateur' 
 		and lignefraishorsforfait.mois = '$mois' ";	
 		$res = PdoGsb::$monPdo->query($req);
@@ -340,20 +340,134 @@ class PdoGsb{
 		where fichefrais.idutilisateur ='$idutilisateur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
-        function reporterFraisHorsForfait($idFrais, $mois, $idutilisateur, $unMois)
+        function reporterFraisHorsForfait($idFrais, $dernierMois)
         {
-            if($unMois != 12){
-                //requete pour mettre a jour le champs
-                $req = "update lignefraishorsforfait set mois=$mois + 1 where idutilisateur='$idutilisateur' and id='$idFrais";
-            }
-            else {
-                //Pour passer au premier mois de l'année suivante, maj du champs
-                $req = "update lignefraishorsforfait set mois=$mois + 89 where idutilisateur='$idutilisateur' and id='$idFrais";
-            }
+             //requete pour mettre a jour le champs
+            $req = "update lignefraishorsforfait set mois = $dernierMois where id = $idFrais";
 
             //execution de la requete
             PdoGsb::$monPdo->exec($req);
           
+        }
+        static public function getLesVisiteursSuivi()
+        {
+            $req="SELECT * FROM utilisateur where comptable=0 order by nom";
+            $sql = PDOGsb::$monPdo->query($req);
+            $lesVisiteurs= $sql->fetchAll();
+            return ($lesVisiteurs);
+        }
+        static public function getLesMoisSuivi()
+        {
+            $req='select distinct mois from Fichefrais';
+            $sql= PdoGsb::$monPdo->query($req);
+            $listeMois= $sql->fetchAll();
+            return ($listeMois);
+            
+        }
+        static public function verifExistanceFiche($idutilisateur, $mois){
+            $req="select * from fichefrais where fichefrais.idutilisateur='$idutilisateur' and fichefrais.mois ='$mois' and idEtat='VA'";
+            $sql=PdoGsb::$monPdo->query($req); 
+            $listeFiches= $sql->fetchAll();
+            return ($listeFiches);
+        }
+        static public function getLesFraisForfaitSuivi($idutilisateur, $mois){
+		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, 
+		lignefraisforfait.quantite as quantite , (lignefraisforfait.quantite*fraisforfait.montant) as montant from lignefraisforfait inner join fraisforfait 
+		on fraisforfait.id = lignefraisforfait.idfraisforfait
+		where lignefraisforfait.idutilisateur ='$idutilisateur' and lignefraisforfait.mois='$mois' 
+		order by lignefraisforfait.idfraisforfait";	
+		$res = PdoGsb::$monPdo->query($req);
+		$lesLignes = $res->fetchAll();
+		return $lesLignes; 
+	}
+        function creerPdfReservation($idutilisateur, $mois){
+        $totalFF=0;
+        $totalHF=0;
+        $total=0;
+        $numAnnee =substr($mois,0,4);
+        $numMois =substr($mois,4,2);
+        $moisEtAnnee = ''.$numMois.'/'.$numAnnee.'';
+        $req1="select * from utilisateur where id='$idutilisateur'";
+        $sql1=PdoGsb::$monPdo->query($req1);
+        $tabVisiteur= $sql1->fetch();
+        $reqFraisForfait="select fraisforfait.libelle as libelle, 
+		lignefraisforfait.quantite as quantite, fraisforfait.montant as montantunitaire , (lignefraisforfait.quantite*fraisforfait.montant) as montant from lignefraisforfait inner join fraisforfait 
+		on fraisforfait.id = lignefraisforfait.idfraisforfait
+		where lignefraisforfait.idutilisateur ='$idutilisateur' and lignefraisforfait.mois='$mois' 
+		order by lignefraisforfait.idfraisforfait";
+        $resFraisForfait=PdoGsb::$monPdo->query($reqFraisForfait);
+	$tabFraisForfait = $resFraisForfait->fetchAll();
+        $reqFraisHF ="select lignefraishorsforfait.libelle as libelle, lignefraishorsforfait.date as date, lignefraishorsforfait.montant as montant from lignefraishorsforfait where lignefraishorsforfait.idutilisateur ='$idutilisateur' 
+		and lignefraishorsforfait.mois = '$mois'";	
+	$resFraisHF = PdoGsb::$monPdo->query($reqFraisHF);
+	$tabFraisHF = $resFraisHF->fetchAll();
+        
+        $pdf=ob_get_clean();    
+        $pdf=new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        // $pdf->Image('images/logo.jpg',20,20, 64, 48);
+        $pdf->SetTextColor(51,102,255);
+        $pdf->Cell(180,10,utf8_decode("Remboursement des Frais engagés"),0,0,'C');
+        $pdf->Ln(50);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Cell(40,10,'Visiteur : '.$tabVisiteur['nom']." ".$tabVisiteur['prenom'],'C');
+        $pdf->Cell(20);
+        $pdf->Ln(10);
+        $pdf->Cell(1,10,'ID : '.$tabVisiteur['id'],'C');
+        $pdf->Cell(20);
+        $pdf->Ln(10);
+        $pdf->Cell(40,10,'Mois : '.$moisEtAnnee,'C');
+        $pdf->Ln(30);
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(75);
+        $pdf->Cell(10,10,utf8_decode('Frais Basiques'),'C');
+        $pdf->SetFont('Arial','I',12);
+        $pdf->SetTextColor(150,102,255);
+        $pdf->Ln(20);
+        $pdf->Cell(20,10,utf8_decode('Frais forfétaires'),'C');
+        $pdf->Cell(15);        
+        $pdf->Cell(20,10,utf8_decode('Quantité'),'C');
+        $pdf->Cell(25,10,'Montant unitaire','C');
+        $pdf->Cell(10);   
+        $pdf->Cell(20,10,'Total','C');
+        $pdf->SetTextColor(0,0,0);
+        foreach($tabFraisForfait as $unForfait){   
+        $pdf->Ln(10);
+        $pdf->Cell(45, 10, utf8_decode($unForfait['libelle']));
+        $pdf->Cell(20, 10, utf8_decode($unForfait['quantite']));
+        $pdf->Cell(20, 10, utf8_decode($unForfait['montantunitaire']));
+        $pdf->Cell(20, 10, utf8_decode($unForfait['montant']));
+        $totalFF=$totalFF+$unForfait['montant'];
+        }
+        $pdf->Ln(40);
+        $pdf->Cell(80);
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(10,10,utf8_decode('Autres Frais'),'C');
+        $pdf->SetFont('Arial','I',12);
+        $pdf->SetTextColor(150,102,255);
+        $pdf->Ln(20);
+        $pdf->Cell(20,10,utf8_decode('Date'),'C');
+        $pdf->Cell(15);        
+        $pdf->Cell(20,10,utf8_decode('Libellé'),'C');
+        $pdf->Cell(25); 
+        $pdf->Cell(45,10,'Montant','C');
+        $pdf->SetTextColor(0,0,0);
+        foreach($tabFraisHF as $unForfaitHF){   
+        $pdf->Ln(10);
+        $pdf->Cell(35, 10, utf8_decode($unForfaitHF['date']));
+        $pdf->Cell(20, 10, utf8_decode($unForfaitHF['libelle']));
+        $pdf->Cell(25); 
+        $pdf->Cell(35, 10, utf8_decode($unForfaitHF['montant']));
+        $totalHF=$totalHF+$unForfaitHF['montant'];
+        }
+        $pdf->Ln(20);
+        $total=$totalFF+$totalHF;
+        $pdf->Cell(120);
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(35, 10, utf8_decode('Total : '.$total.' euros'));
+        
+        $pdf->Output();
         }
         
 }

@@ -113,17 +113,30 @@ switch($action){
                     
                     break;
         case 'reporter':{
+                    
                     //recuperation des variables post
                     $idFraisHorsForfait = $_REQUEST['idFraisHorsForfait'];
                     $moisASelectionner = $_REQUEST['unMois'];
                     $visiteurASelectionner = $_REQUEST['idVisiteur'];
                     $nom = $_REQUEST['nom'];
                     $prenom = $_REQUEST['prenom'];
-
+                    
                     $numAnnee =substr( $moisASelectionner,0,4);
                     $numMois =substr( $moisASelectionner,4,2);
 
-                    $pdo->reporterFraisHorsForfait($idFraisHorsForfait, $moisASelectionner, $visiteurASelectionner, $numMois);
+                   $dernierMois = $pdo->dernierMoisSaisi($visiteurASelectionner);
+        
+                    //verification que le frais est dans le dernier mois de saisi
+                    if($moisASelectionner == $dernierMois)
+                    {
+                        $dernierMois = moisSuivant($moisASelectionner);
+                        $pdo->creeNouvellesLignesFrais($visiteurASelectionner, $dernierMois);
+                        $pdo->reporterFraisHorsForfait($idFraisHorsForfait,$dernierMois);
+                    }
+                    else
+                    {
+                        $pdo->reporterFraisHorsForfait($idFraisHorsForfait,$dernierMois);
+                    }
                     
                     include("vues/v_confirmReport.php");
                 break;
